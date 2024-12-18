@@ -4,10 +4,15 @@
 
 @section('content')
 
-<section class="container mt-4">
+<section class="container-fluid mt-4">
+<div class="dashboard-text mb-2 pl-3">
+        <h1>Dashboard</h1>
+        <h3>Home > Dashboard</h3>
+    </div>
 
     <!-- Row for 3 Cards -->
     <div class="row g-4">
+    
         <!-- Card 1 -->
         <div class="col-md-4">
             <div class="card shadow h-100 border-0" style="background-color: #004C4C; color: white;">

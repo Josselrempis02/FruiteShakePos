@@ -4,13 +4,13 @@
             <i class="lni lni-grid-alt"></i>
         </button>
         <div class="sidebar-logo">
-            <a href="#">FruitShake</a>
+            <a href="{{ route ('staff.dashboard') }}">FruitShake</a>
         </div>
     </div>
     <ul class="sidebar-nav">
         <!-- Dashboard -->
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="{{ route ('staff.dashboard') }}" class="sidebar-link">
                 <i class="lni lni-dashboard"></i>
                 <span>Dashboard</span>
             </a>
@@ -18,7 +18,7 @@
 
         <!-- POS -->
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="{{ route ('staff.pos') }}" class="sidebar-link">
                 <i class="lni lni-cart"></i>
                 <span>POS</span>
             </a>
@@ -65,13 +65,7 @@
         </li>
     </ul>
 
-    <!-- Footer: Logout -->
-    <div class="sidebar-footer">
-        <a href="#" class="sidebar-link">
-            <i class="lni lni-exit"></i>
-            <span>Logout</span>
-        </a>
-    </div>
+    
 </aside>
 
 

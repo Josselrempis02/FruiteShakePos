@@ -17,7 +17,15 @@
                         <li><a class="dropdown-item" href="#">Profile</a></li>
                         <li><a class="dropdown-item" href="#">Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-danger" style="border: none; background: none; padding: 0; margin: 0; color: inherit; cursor: pointer;">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+
                     </ul>
                 </li>
             </ul>
