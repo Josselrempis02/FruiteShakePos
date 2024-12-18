@@ -170,5 +170,17 @@ a.sidebar-link:hover {
     width: 40px;
 }
 
+.dashboard-text {
+    padding: 20px;
+}
+
+.dashboard-text h1 {
+    font-size: 24px;
+}
+
+.dashboard-text h3 {
+    font-size: 16px;
+}
+
 @media (min-width: 768px) {
 }

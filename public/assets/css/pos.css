@@ -1,0 +1,47 @@
+body {
+    background-color: #e8f9fd;
+}
+.product-card {
+    background-color: #00473e;
+    color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+.product-card i {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+.receipt-section {
+    background-color: #e2edc8;
+    border-radius: 10px;
+    padding: 20px;
+}
+.receipt-header {
+    color: #b5523d;
+    font-weight: bold;
+}
+.discount-btn,
+.confirm-btn {
+    background-color: #f27642;
+    color: black;
+    border: none;
+    border-radius: 5px;
+}
+
+.subtotal,
+.total {
+    font-weight: bold;
+}
+.dark-box {
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    border: none;
+}
+
+.pos-card {
+    background-color: #fdd082;
+}
