@@ -15,10 +15,10 @@
             <!-- Item Grid -->
             <div class="col-md-8 mb-3">
                 <div class="d-flex justify-content-start mb-3">
-                    <button class="btn btn-sm text-white px-4 me-2" style="background-color: #F27642;">ALL</button>
-                    <button class="btn btn-sm text-muted">Shake</button>
-                    <button class="btn btn-sm text-muted">Milk Shakes</button>
-                    <button class="btn btn-sm text-muted">Add Ons</button>
+                    <button class="btn btn-sm  px-4 me-2" >ALL</button>
+                    <button class="btn btn-sm   px-4 me-2">Shake</button>
+                    <button class="btn btn-sm   px-4 me-2">Milk Shakes</button>
+                    <button class="btn btn-sm   px-4 me-2">Add Ons</button>
                 </div>
                 <div class="row g-3">
                     <!-- Product Cards -->
@@ -75,7 +75,11 @@
                             <span>$55.00</span>
                         </li>
                     </ul>
-                    <button class="btn discount-btn w-100 mb-3">Discount</button>
+                    <button class="btn discount-btn w-100 mb-3"data-bs-toggle="modal" data-bs-target="#exampleModal">Discount</button>
+
+                    <!-- Modal -->
+                    <x-discount-modal/>
+
                     <div class="mb-3">
                         <div class="d-flex justify-content-between">
                             <span>Subtotal</span>
@@ -88,7 +92,29 @@
                     </div>
                     <input type="text" class="form-control dark-box mb-3" placeholder="Customer name">
                     <textarea class="form-control dark-box mb-3" rows="3" placeholder="Notes"></textarea>
-                    <button class="btn confirm-btn w-100">Confirm</button>
+
+                    <!-- Trigger Button -->
+                    <button class="btn confirm-btn w-100" data-bs-toggle="modal" data-bs-target="#confirmModal">Confirm</button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmModalLabel">Confirmation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to proceed?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary">Confirm</button>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -97,4 +123,4 @@
 </section>
 
 
-@endsection
+    @endsection

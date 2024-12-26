@@ -45,3 +45,13 @@ body {
 .pos-card {
     background-color: #fdd082;
 }
+
+.discount div {
+    padding: 10px;
+}
+
+.discount div:hover {
+    background-color: #fdd082;
+    border-radius: 10px;
+    color: black;
+}

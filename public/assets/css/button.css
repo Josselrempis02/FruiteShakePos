@@ -1,0 +1,9 @@
+.btn-sm:hover {
+    background-color: #f27642;
+    color: white;
+}
+
+.btn-sm:focus {
+    background-color: #f27642;
+    color: white;
+}
