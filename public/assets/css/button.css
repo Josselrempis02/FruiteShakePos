@@ -7,3 +7,11 @@
     background-color: #f27642;
     color: white;
 }
+
+.add-product-btn {
+    background-color: #f27642;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+}

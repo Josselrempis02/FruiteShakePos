@@ -11,7 +11,7 @@
                 <!-- Dropdown menu -->
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/account.png" class="avatar img-fluid rounded-circle" alt="User" style="width: 40px; height: 40px;">
+                        <img src="{{ asset('assets/images/account.svg') }}" class="avatar img-fluid rounded-circle" alt="User" style="width: 40px; height: 40px;">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end rounded shadow">
                         <li><a class="dropdown-item" href="#">Profile</a></li>
