@@ -9,7 +9,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::post('/login', [App\Http\Controllers\auth\loginController::class, 'login'])->name('login');
+Route::post('/login', [loginController::class, 'login'])->name('login');
 
 // Logout route
 Route::post('/logout', [loginController::class, 'logout'])->name('logout');
@@ -35,6 +35,11 @@ Route::group(['prefix' => 'staff', 'middleware' => ['role:staff']], function () 
     
 
     Route::get('/inventory', [PagesController::class, 'showInv'])->name('staff.inv');
+
+    Route::get('/add-staff', [PagesController::class, 'showStaff'])->name('staff.add');
+    Route::get('/report', [PagesController::class, 'showReport'])->name('staff.report');
+
+    Route::get('/receipts', [PagesController::class, 'showReceipts'])->name('staff.receipt');
 
 
 

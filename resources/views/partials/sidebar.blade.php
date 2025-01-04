@@ -4,13 +4,13 @@
             <i class="lni lni-grid-alt"></i>
         </button>
         <div class="sidebar-logo">
-            <a href="{{ route ('staff.dashboard') }}">FruitShake</a>
+            <a href="{{ route('staff.dashboard') }}">FruitShake</a>
         </div>
     </div>
     <ul class="sidebar-nav">
         <!-- Dashboard -->
         <li class="sidebar-item">
-            <a href="{{ route ('staff.dashboard') }}" class="sidebar-link">
+            <a href="{{ route('staff.dashboard') }}" class="sidebar-link">
                 <i class="lni lni-dashboard"></i>
                 <span>Dashboard</span>
             </a>
@@ -18,7 +18,7 @@
 
         <!-- POS -->
         <li class="sidebar-item">
-            <a href="{{ route ('staff.pos') }}" class="sidebar-link">
+            <a href="{{ route('staff.pos') }}" class="sidebar-link">
                 <i class="lni lni-cart"></i>
                 <span>POS</span>
             </a>
@@ -26,7 +26,7 @@
 
         <!-- Inventory -->
         <li class="sidebar-item">
-            <a href="{{ route ('staff.inv') }}" class="sidebar-link">
+            <a href="{{ route('staff.inv') }}" class="sidebar-link">
                 <i class="lni lni-package"></i>
                 <span>Inventory</span>
             </a>
@@ -34,7 +34,7 @@
 
         <!-- Staff -->
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="{{ route('staff.add') }}" class="sidebar-link">
                 <i class="lni lni-users"></i>
                 <span>Staff</span>
             </a>
@@ -42,7 +42,7 @@
 
         <!-- Reports -->
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="{{ route('staff.report') }}" class="sidebar-link">
                 <i class="lni lni-stats-up"></i>
                 <span>Reports</span>
             </a>
@@ -50,12 +50,11 @@
 
         <!-- Receipts -->
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
-            <i class="lni lni-stats-up"></i>
+            <a href="{{ route('staff.receipt') }}" class="sidebar-link">
+                <i class="lni lni-book"></i> <!-- Fallback icon -->
                 <span>Receipts</span>
             </a>
         </li>
-
         <!-- Cash -->
         <li class="sidebar-item">
             <a href="#" class="sidebar-link">
@@ -64,9 +63,8 @@
             </a>
         </li>
     </ul>
-
-    
 </aside>
+
 
 
          <!-- <li class="sidebar-item">
