@@ -11,4 +11,19 @@ class PagesController extends Controller
     {
         return view('pages.inventory');
     }
+
+    public function showStaff ()
+    {
+        return view('pages.staff');
+    }
+
+    public function showReport ()
+    {
+        return view('pages.report');
+    }
+
+    public function showReceipts ()
+    {
+        return view('pages.receipts');
+    }
 }
