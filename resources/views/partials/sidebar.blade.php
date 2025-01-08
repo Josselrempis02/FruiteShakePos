@@ -24,6 +24,14 @@
             </a>
         </li>
 
+        <li class="sidebar-item">
+            <a href="{{ route('staff.prod') }}" class="sidebar-link">
+                <i class="fas fa-box"></i>
+                <span>Product</span>
+            </a>
+        </li>
+
+
         <!-- Inventory -->
         <li class="sidebar-item">
             <a href="{{ route('staff.inv') }}" class="sidebar-link">
@@ -31,6 +39,8 @@
                 <span>Inventory</span>
             </a>
         </li>
+
+
 
         <!-- Staff -->
         <li class="sidebar-item">
