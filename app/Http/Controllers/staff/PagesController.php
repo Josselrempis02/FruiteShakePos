@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\staff;
 
-use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PagesController extends Controller
 {
@@ -25,5 +26,12 @@ class PagesController extends Controller
     public function showReceipts ()
     {
         return view('pages.receipts');
+    }
+
+
+    public function showProd ()
+    {
+        $products = Product::paginate(10);
+        return view('pages.product', compact('products'));
     }
 }

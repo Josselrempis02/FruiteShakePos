@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\staff\PagesController;
-use App\Http\Controllers\staff\PosController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\staff\PosController;
 use App\Http\Controllers\auth\loginController;
+use App\Http\Controllers\staff\PagesController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -40,6 +41,12 @@ Route::group(['prefix' => 'staff', 'middleware' => ['role:staff']], function () 
     Route::get('/report', [PagesController::class, 'showReport'])->name('staff.report');
 
     Route::get('/receipts', [PagesController::class, 'showReceipts'])->name('staff.receipt');
+    Route::get('/product', [PagesController::class, 'showProd'])->name('staff.prod');
+
+   
+    Route::resource('products', ProductsController::class);
+
+
 
 
 
