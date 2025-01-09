@@ -34,7 +34,7 @@
 
         <!-- Inventory -->
         <li class="sidebar-item">
-            <a href="{{ route('staff.inv') }}" class="sidebar-link">
+            <a href="{{ route('inventory.index') }}" class="sidebar-link">
                 <i class="lni lni-package"></i>
                 <span>Inventory</span>
             </a>

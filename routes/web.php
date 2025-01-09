@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\staff\PosController;
 use App\Http\Controllers\auth\loginController;
 use App\Http\Controllers\staff\PagesController;
@@ -33,9 +34,13 @@ Route::group(['prefix' => 'staff', 'middleware' => ['role:staff']], function () 
     Route::get('/dashboard', [loginController::class, 'staffDashboard'])->name('staff.dashboard');
 
     Route::get('/pos', [PosController::class, 'showPos'])->name('staff.pos');
-    
 
-    Route::get('/inventory', [PagesController::class, 'showInv'])->name('staff.inv');
+    Route::post('/inventory/{id}/add-stock', [PagesController::class, 'addStock'])->name('inventory.addStock');
+    Route::get('/inventory/{id}/stock-logs', [PagesController::class, 'showStocks'])->name('inventory.stockLogs');
+
+
+
+  
 
     Route::get('/add-staff', [PagesController::class, 'showStaff'])->name('staff.add');
     Route::get('/report', [PagesController::class, 'showReport'])->name('staff.report');
@@ -45,6 +50,8 @@ Route::group(['prefix' => 'staff', 'middleware' => ['role:staff']], function () 
 
    
     Route::resource('products', ProductsController::class);
+    Route::resource('inventory', InventoryController::class);
+
 
 
 
