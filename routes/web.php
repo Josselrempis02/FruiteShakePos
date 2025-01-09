@@ -41,7 +41,7 @@ Route::group(['prefix' => 'staff', 'middleware' => ['role:staff']], function () 
     Route::get('/report', [PagesController::class, 'showReport'])->name('staff.report');
 
     Route::get('/receipts', [PagesController::class, 'showReceipts'])->name('staff.receipt');
-    Route::get('/product', [PagesController::class, 'showProd'])->name('staff.prod');
+   
 
    
     Route::resource('products', ProductsController::class);

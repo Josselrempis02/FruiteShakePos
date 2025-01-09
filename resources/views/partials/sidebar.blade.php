@@ -25,7 +25,7 @@
         </li>
 
         <li class="sidebar-item">
-            <a href="{{ route('staff.prod') }}" class="sidebar-link">
+            <a href="{{ route('products.index') }}" class="sidebar-link">
                 <i class="fas fa-box"></i>
                 <span>Product</span>
             </a>

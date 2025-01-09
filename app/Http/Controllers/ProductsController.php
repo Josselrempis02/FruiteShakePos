@@ -10,7 +10,7 @@ class ProductsController extends Controller
     public function index()
     {
         // Display a listing of the resource
-        $products = Product::all();
+        $products = Product::paginate(10);
         return view('pages.product', compact('products'));
     }
 
@@ -32,7 +32,7 @@ class ProductsController extends Controller
 
         Product::create($validated);
         
-        return redirect()->route('staff.prod')->with('success', 'Product added successfully!');
+        return redirect()->route('products.index')->with('success', 'Product added successfully!');
     }
 
     public function show($id)
@@ -47,21 +47,23 @@ class ProductsController extends Controller
         $product = Product::findOrFail($id);
         return view('components.edit-product', compact('product'));
     }
+    
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'category' => 'required|string',
+            'category' => 'required|string|max:255',
         ]);
     
         $product = Product::findOrFail($id);
         $product->update($validated);
     
-        return redirect()->route('staff.prod')->with('success', 'Product updated successfully!');
+        return redirect()->route('products.index')->with('success', 'Product updated successfully!');
     }
+    
     
 
     public function destroy($id)
@@ -70,6 +72,6 @@ class ProductsController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
 
-        return redirect()->route('staff.prod')->with('success', 'Product deleted successfully!');
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully!');
     }
 }

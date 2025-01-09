@@ -29,9 +29,9 @@ class PagesController extends Controller
     }
 
 
-    public function showProd ()
-    {
-        $products = Product::paginate(10);
-        return view('pages.product', compact('products'));
-    }
+    // public function showProd ()
+    // {
+    //     $products = Product::paginate(10);
+    //     return view('pages.product', compact('products'));
+    // }
 }
