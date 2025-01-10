@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\staff\PosController;
@@ -42,7 +43,7 @@ Route::group(['prefix' => 'staff', 'middleware' => ['role:staff']], function () 
 
   
 
-    Route::get('/add-staff', [PagesController::class, 'showStaff'])->name('staff.add');
+    
     Route::get('/report', [PagesController::class, 'showReport'])->name('staff.report');
 
     Route::get('/receipts', [PagesController::class, 'showReceipts'])->name('staff.receipt');
@@ -51,6 +52,7 @@ Route::group(['prefix' => 'staff', 'middleware' => ['role:staff']], function () 
    
     Route::resource('products', ProductsController::class);
     Route::resource('inventory', InventoryController::class);
+    Route::resource('staff', StaffController::class);
 
 
 

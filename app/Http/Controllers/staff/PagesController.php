@@ -29,13 +29,7 @@ class PagesController extends Controller
 
         return redirect()->route('inventory.index')->with('success', 'Stock added successfully and logged!');
     }
-
     
-    public function showStaff ()
-    {
-        return view('pages.staff');
-    }
-
     public function showReport ()
     {
         return view('pages.report');
