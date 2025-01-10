@@ -32,27 +32,22 @@ Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function () 
 });
 
 Route::group(['prefix' => 'staff', 'middleware' => ['role:staff']], function () {
+
     Route::get('/dashboard', [loginController::class, 'staffDashboard'])->name('staff.dashboard');
-
     Route::get('/pos', [PosController::class, 'showPos'])->name('staff.pos');
-
     Route::post('/inventory/{id}/add-stock', [PagesController::class, 'addStock'])->name('inventory.addStock');
     Route::get('/inventory/{id}/stock-logs', [PagesController::class, 'showStocks'])->name('inventory.stockLogs');
-
-
-
-  
-
-    
     Route::get('/report', [PagesController::class, 'showReport'])->name('staff.report');
-
     Route::get('/receipts', [PagesController::class, 'showReceipts'])->name('staff.receipt');
-   
 
-   
     Route::resource('products', ProductsController::class);
     Route::resource('inventory', InventoryController::class);
     Route::resource('staff', StaffController::class);
+
+    Route::post('/cart/store', [PosController::class, 'store'])->name('cart.store');
+    Route::post('/cart/update', [PosController::class, 'update'])->name('cart.update');
+    Route::post('/cart/discount', [PosController::class, 'applyDiscount'])->name('cart.applyDiscount');
+
 
 
 

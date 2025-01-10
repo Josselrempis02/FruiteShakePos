@@ -55,3 +55,44 @@ body {
     border-radius: 10px;
     color: black;
 }
+
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allows wrapping for small screens */
+}
+
+.item-name {
+    max-width: 60%; /* Adjust width to balance alignment */
+    word-break: break-word; /* Prevents long text from overflowing */
+}
+
+.item-quantity {
+    display: flex;
+    align-items: center;
+}
+
+.item-price {
+    text-align: right;
+    white-space: nowrap; /* Prevents price from wrapping */
+}
+
+@media (max-width: 576px) {
+    .list-group-item {
+        flex-direction: column; /* Stacks content on small devices */
+        align-items: flex-start; /* Aligns items to the start */
+    }
+
+    .item-name,
+    .item-quantity,
+    .item-price {
+        width: 100%; /* Full width for small screens */
+        margin-bottom: 5px; /* Adds space between sections */
+    }
+
+    .item-quantity {
+        justify-content: flex-start;
+    }
+}
