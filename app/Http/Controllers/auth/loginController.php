@@ -34,17 +34,17 @@ class loginController extends Controller
     }
 
     public function logout(Request $request)
-{
-    // Log out the authenticated user
-    Auth::logout();
-    
+    {
+        Auth::logout();
+
     // Invalidate the session
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
-    // Redirect to the unified login route
-    return redirect()->route('login')->with('success', 'Logged out successfully');
-}
+    // Redirect to the home page
+    return redirect('/')->with('success', 'Logged out successfully');
+
+    }
 
     
 

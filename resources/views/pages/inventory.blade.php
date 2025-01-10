@@ -51,14 +51,6 @@
                     title="View Stock Logs">
                         <i class="fas fa-history"></i>
                     </a>
-
-                    <!-- Delete Button -->
-                    <button 
-                        class="btn btn-link text-danger p-0" 
-                        title="Delete" 
-                        onclick="confirmDelete({{ $product->id }})">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
                 </td>
 
 

@@ -13,7 +13,7 @@ class Role extends Model
 
     protected $fillable = [
         'name',
-        'decription',
+        'decription'
     ];
 
     public function users()
