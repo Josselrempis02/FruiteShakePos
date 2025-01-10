@@ -65,13 +65,13 @@
                 <span>Receipts</span>
             </a>
         </li>
-        <!-- Cash -->
+        <!-- Cash
         <li class="sidebar-item">
             <a href="#" class="sidebar-link">
                 <i class="lni lni-wallet"></i>
                 <span>Cash</span>
             </a>
-        </li>
+        </li> -->
     </ul>
 </aside>
 

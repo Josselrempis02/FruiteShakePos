@@ -1,92 +1,160 @@
-@extends('layouts.admin')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Reports</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-5">
+        <div class="text-center mb-4">
+            <h1>Sales Reports</h1>
+        </div>
 
-@section('title', 'Dashboard')
+        <!-- Daily Sales Report -->
+        <section class="mb-5">
+            <h2 class="text-center">Daily Sales Report</h2>
+            <p class="text-muted text-center">For <span id="daily-date">2025-01-10</span></p>
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Transaction ID</th>
+                        <th>Customer Name</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="daily-sales-data">
+                    <!-- Dynamic rows will go here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end fw-bold">Total Sales</td>
+                        <td id="daily-total-sales" class="fw-bold">$0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="text-center mt-3">
+                <button id="generate-daily-pdf" class="btn btn-primary">Generate Daily PDF</button>
+            </div>
+        </section>
 
-@section('content')
-
-
-<section class="dashboard-container py-4">
-    <div class="dashboard-text mb-4">
-        <h1 class="fw-bold">Sales Report</h1>
-        <h3 class="text-muted">Home > Sales Report</h3>
+        <!-- Monthly Sales Report -->
+        <section>
+            <h2 class="text-center">Monthly Sales Report</h2>
+            <p class="text-muted text-center">For the month of <span id="monthly-month">January</span></p>
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Transaction ID</th>
+                        <th>Date</th>
+                        <th>Customer Name</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="monthly-sales-data">
+                    <!-- Dynamic rows will go here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-end fw-bold">Total Sales</td>
+                        <td id="monthly-total-sales" class="fw-bold">$0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="text-center mt-3">
+                <button id="generate-monthly-pdf" class="btn btn-primary">Generate Monthly PDF</button>
+            </div>
+        </section>
     </div>
 
-    <div class="container-fluid">
-        <!-- Month Selector -->
-        <form action="#" method="GET" class="mb-4">
-            <div class="row g-3">
-                <div class="col-12 col-sm-6 col-md-4">
-                    <input type="month" name="month" class="form-control" value="2025-01">
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <button type="submit" class="btn btn-save w-100">Generate Sales for Month</button>
-                </div>
-            </div>
-        </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        // Example data
+        const dailySales = [
+            { id: 1, transactionId: "D001", customer: "John Doe", amount: 100 },
+            { id: 2, transactionId: "D002", customer: "Alice Smith", amount: 200 },
+        ];
 
-        <!-- Export to PDF Button -->
-        <div class="mb-4 d-flex justify-content-start">
-            <a href="#" class="btn btn-danger">Export to PDF</a>
-        </div>
+        const monthlySales = [
+            { id: 1, transactionId: "M001", date: "2025-01-01", customer: "John Doe", amount: 100 },
+            { id: 2, transactionId: "M002", date: "2025-01-05", customer: "Alice Smith", amount: 200 },
+            { id: 3, transactionId: "M003", date: "2025-01-10", customer: "Bob Johnson", amount: 150 },
+        ];
 
-        <!-- Summary Cards -->
-        <div class="row g-4">
-            <div class="col-6">
-                <div class="card shadow-sm w-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Sales for January 2025</h5>
-                        <p class="card-text fs-4 fw-bold">₱10,000.00</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="card shadow-sm w-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Profit for January 2025</h5>
-                        <p class="card-text fs-4 fw-bold">₱5,000.00</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        // Populate Daily Sales
+        const dailyTbody = document.getElementById("daily-sales-data");
+        const dailyDate = "2025-01-10";
+        document.getElementById("daily-date").textContent = dailyDate;
+        let dailyTotal = 0;
 
-        <!-- Sales Table -->
-        <div class="card mb-4 shadow-sm mt-4">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Sales Details for January 2025</h5>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Date</th>
-                                <th>Total Quantity Sold</th>
-                                <th>Total Sales</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>2025-01-01</td>
-                                <td>100</td>
-                                <td>₱1,000.00</td>
-                            </tr>
-                            <tr>
-                                <td>2025-01-02</td>
-                                <td>150</td>
-                                <td>₱1,500.00</td>
-                            </tr>
-                            <tr>
-                                <td>2025-01-03</td>
-                                <td>120</td>
-                                <td>₱1,200.00</td>
-                            </tr>
-                            <!-- Add more rows as needed -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+        dailySales.forEach((sale, index) => {
+            dailyTotal += sale.amount;
+            dailyTbody.innerHTML += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${sale.transactionId}</td>
+                    <td>${sale.customer}</td>
+                    <td>$${sale.amount.toFixed(2)}</td>
+                </tr>
+            `;
+        });
+        document.getElementById("daily-total-sales").textContent = `$${dailyTotal.toFixed(2)}`;
 
-@endsection
+        // Populate Monthly Sales
+        const monthlyTbody = document.getElementById("monthly-sales-data");
+        const monthlyMonth = "January";
+        document.getElementById("monthly-month").textContent = monthlyMonth;
+        let monthlyTotal = 0;
+
+        monthlySales.forEach((sale, index) => {
+            monthlyTotal += sale.amount;
+            monthlyTbody.innerHTML += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${sale.transactionId}</td>
+                    <td>${sale.date}</td>
+                    <td>${sale.customer}</td>
+                    <td>$${sale.amount.toFixed(2)}</td>
+                </tr>
+            `;
+        });
+        document.getElementById("monthly-total-sales").textContent = `$${monthlyTotal.toFixed(2)}`;
+
+        // Generate Daily PDF
+        document.getElementById("generate-daily-pdf").addEventListener("click", () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+            pdf.text(`Daily Sales Report (${dailyDate})`, 10, 10);
+
+            let y = 20;
+            dailySales.forEach((sale, index) => {
+                pdf.text(`${index + 1}. ${sale.transactionId} - $${sale.amount.toFixed(2)}`, 10, y);
+                y += 10;
+            });
+
+            pdf.text(`Total Sales: $${dailyTotal.toFixed(2)}`, 10, y + 10);
+            pdf.save(`Daily_Sales_Report_${dailyDate}.pdf`);
+        });
+
+        // Generate Monthly PDF
+        document.getElementById("generate-monthly-pdf").addEventListener("click", () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+            pdf.text(`Monthly Sales Report (${monthlyMonth})`, 10, 10);
+
+            let y = 20;
+            monthlySales.forEach((sale, index) => {
+                pdf.text(`${index + 1}. ${sale.transactionId} - $${sale.amount.toFixed(2)}`, 10, y);
+                y += 10;
+            });
+
+            pdf.text(`Total Sales: $${monthlyTotal.toFixed(2)}`, 10, y + 10);
+            pdf.save(`Monthly_Sales_Report_${monthlyMonth}.pdf`);
+        });
+    </script>
+</body>
+</html>
