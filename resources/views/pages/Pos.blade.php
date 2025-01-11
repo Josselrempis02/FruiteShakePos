@@ -46,23 +46,81 @@
             <div class="col-md-4">
                 <div class="receipt-section">
                     <div class="receipt-header mb-3">Receipt</div>
-                    <ul class="list-group mb-3">
-                @foreach (Cart::getContent() as $item)
-                    <li class="list-group-item d-flex justify-content-between align-items-start flex-wrap">
-                        <div class="item-name flex-grow-1 text-truncate">
-                            {{ $item->name }}
-                        </div>
-                        <div class="item-quantity d-flex align-items-center mx-3">
-                            <button class="btn btn-sm btn-outline-secondary update-quantity me-1" data-id="{{ $item->id }}" data-action="decrease">-</button>
-                            <span class="px-2">{{ $item->quantity }}</span>
-                            <button class="btn btn-sm btn-outline-secondary update-quantity ms-1" data-id="{{ $item->id }}" data-action="increase">+</button>
-                        </div>
-                        <div class="item-price text-nowrap">
-                            ${{ number_format($item->price * $item->quantity, 2) }}
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
+                    <ul class="list-group mb-3" id="cart-items">
+    @foreach (Cart::getContent() as $item)
+        <li class="list-group-item d-flex justify-content-between align-items-start flex-wrap" id="item-{{ $item->id }}">
+            <div class="item-name flex-grow-1 text-truncate">
+                {{ $item->name }}
+            </div>
+            <div class="item-quantity d-flex align-items-center mx-3">
+                <!-- Decrease Quantity -->
+                <button class="btn btn-sm btn-outline-secondary update-quantity me-1" data-id="{{ $item->id }}" data-action="decrease">-</button>
+                <span class="px-2 quantity">{{ $item->quantity }}</span>
+                <!-- Increase Quantity -->
+                <button class="btn btn-sm btn-outline-secondary update-quantity ms-1" data-id="{{ $item->id }}" data-action="increase">+</button>
+            </div>
+            <div class="item-price text-nowrap price">
+                ${{ number_format($item->price * $item->quantity, 2) }}
+            </div>
+        </li>
+    @endforeach
+</ul>
+
+            <script>
+                document.querySelectorAll('.update-quantity').forEach(button => {
+                button.addEventListener('click', function () {
+                    const itemId = this.getAttribute('data-id');
+                    const action = this.getAttribute('data-action');
+
+                    fetch('{{ route('cart.update') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        },
+                        body: JSON.stringify({ id: itemId, action: action }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                const itemElement = this.closest('li'); 
+                                
+                                if (data.quantity === 0) {
+                                
+                                    itemElement.remove();
+                                } else {
+                                    // Update the quantity in the UI
+                                    const quantitySpan = this.parentElement.querySelector('span');
+                                    quantitySpan.textContent = data.quantity;
+
+                                    // Update the total price for the item
+                                    const itemPriceElement = itemElement.querySelector('.item-price');
+                                    itemPriceElement.textContent = `$${data.totalPrice.toFixed(2)}`;
+                                }
+
+                                // Update the subtotal
+                                document.querySelector('.subtotal').textContent = `$${data.subtotal.toFixed(2)}`;
+                                document.querySelector('.total').textContent = `$${data.subtotal.toFixed(2)}`;
+
+                                // Update the discount if applicable
+                                if (document.querySelector('.discount')) {
+                                    document.querySelector('.discount').textContent = `- $${data.discount.toFixed(2)}`;
+                                }
+
+                                // Update the total
+                                document.querySelector('.total').textContent = `$${data.total.toFixed(2)}`;
+                            } else {
+                                alert(data.message || 'Something went wrong.');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+
+            </script>
+
+
+
 
 
                     <button class="btn discount-btn w-100 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Enter Discount</button>
@@ -103,33 +161,157 @@
                     </div>
 
                     <div class="mb-3">
-                        <div class="d-flex justify-content-between">
-                            <span>Subtotal</span>
-                            <span class="subtotal">${{ number_format(Cart::getSubTotal(), 2) }}</span>
-                        </div>
-                        @if (session('discount_amount'))
-                            <div class="d-flex justify-content-between">
-                                <span>Discount</span>
-                                <span class="discount">- ${{ number_format(session('discount_amount'), 2) }}</span>
-                            </div>
-                        @endif
-                        <div class="d-flex justify-content-between">
-                            <span>Total</span>
-                            <span class="total">
-                                @if (session('cart_total'))
-                                    ${{ number_format(session('cart_total'), 2) }}
-                                @else
-                                    ${{ number_format(Cart::getTotal(), 2) }}
-                                @endif
-                            </span>
-                        </div>
+    <div class="d-flex justify-content-between">
+        <span>Subtotal</span>
+        <span class="subtotal">${{ number_format(Cart::getSubTotal(), 2) }}</span>
+    </div>
+    @if (session('discount_amount'))
+        <div class="d-flex justify-content-between">
+            <span>Discount</span>
+            <span class="discount">- ${{ number_format(session('discount_amount'), 2) }}</span>
+        </div>
+    @endif
+    <div class="d-flex justify-content-between">
+        <span>Total</span>
+        <span class="total">
+            @if (session('cart_total'))
+                ${{ number_format(session('cart_total'), 2) }}
+            @else
+                ${{ number_format(Cart::getTotal(), 2) }}
+            @endif
+        </span>
+    </div>
+
+    <input type="text" class="form-control dark-box mt-3 mb-3" placeholder="Customer name" name="customer_name" required>
+    <textarea class="form-control dark-box mb-3" rows="3" placeholder="Notes" name="notes" required></textarea>
+
+    <button class="btn confirm-btn w-100" 
+        data-bs-toggle="modal" 
+        data-bs-target="#confirmModal"
+        data-total="{{ session('cart_total') ?? Cart::getTotal() }}">
+        Confirm
+    </button>
+
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color: #f4c983;">
+            <div class="modal-body">
+                <h5 class="text-center">Amount Payable</h5>
+                <h2 class="text-center" id="modalAmountPayable" style="color: #333;">₱0.00</h2>
+
+                <label for="modalAmountReceived" class="form-label">Amount Received</label>
+                <input type="number" id="modalAmountReceived" class="form-control" required>
+
+                <p class="text-center mt-2">Change: <span id="modalChangeDisplay">₱0.00</span></p>
+
+                <!-- Buttons for predefined amounts -->
+                <div class="amount-buttons-container">
+                    <button type="button" class="btn amount-btn" data-amount="20">20</button>
+                    <button type="button" class="btn amount-btn" data-amount="50">50</button>
+                    <button type="button" class="btn amount-btn" data-amount="100">100</button>
+                    <button type="button" class="btn amount-btn" data-amount="200">200</button>
+                    <button type="button" class="btn amount-btn" data-amount="300">300</button>
+                    <button type="button" class="btn amount-btn" data-amount="400">400</button>
+                    <button type="button" class="btn amount-btn" data-amount="500">500</button>
+                    <button type="button" class="btn amount-btn" data-amount="800">800</button>
+                    <button type="button" class="btn amount-btn" data-amount="1000">1000</button>
+                </div>
+
+                <button type="button" class="btn exact-amount-btn w-100">Exact Amount</button>
+                <button id="modalConfirmButton" class="btn proceed-btn w-100 mt-2">Proceed</button>
+
+                <form id="placeOrderForm" action="{{ route('place.order') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="amount_received" id="amountReceivedInput">
+                        <input type="hidden" name="customer_name">
+                        <input type="hidden" name="notes">
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const confirmButton = document.querySelector('.confirm-btn');
+        const modalAmountPayable = document.getElementById('modalAmountPayable');
+        const modalAmountReceived = document.getElementById('modalAmountReceived');
+        const modalChangeDisplay = document.getElementById('modalChangeDisplay');
+        const modalConfirmButton = document.getElementById('modalConfirmButton');
+        const placeOrderForm = document.getElementById('placeOrderForm');
+        const amountButtons = document.querySelectorAll('.amount-btn');
+        const exactAmountButton = document.querySelector('.exact-amount-btn');
+
+        const customerNameInput = document.querySelector('input[name="customer_name"]');
+        const notesInput = document.querySelector('textarea[name="notes"]');
+
+        let totalAmount = 0;
+
+        // Update modal with total amount when the confirm button is clicked
+        confirmButton?.addEventListener('click', function () {
+            totalAmount = parseFloat(confirmButton.dataset.total || 0);
+            if (isNaN(totalAmount)) totalAmount = 0;
+            modalAmountPayable.textContent = `₱${totalAmount.toFixed(2)}`;
+            modalAmountReceived.value = '';
+            modalChangeDisplay.textContent = '₱0.00';
+        });
+
+        // Update change when amount is entered
+        modalAmountReceived.addEventListener('input', function () {
+            const receivedAmount = parseFloat(modalAmountReceived.value || 0);
+            const change = Math.max(receivedAmount - totalAmount, 0);
+            modalChangeDisplay.textContent = `₱${change.toFixed(2)}`;
+        });
+
+        // Handle predefined amount buttons
+        amountButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const amount = parseFloat(button.dataset.amount || 0);
+                modalAmountReceived.value = amount;
+                const change = Math.max(amount - totalAmount, 0);
+                modalChangeDisplay.textContent = `₱${change.toFixed(2)}`;
+            });
+        });
+
+        // Handle exact amount button
+        exactAmountButton.addEventListener('click', function () {
+            modalAmountReceived.value = totalAmount.toFixed(2);
+            modalChangeDisplay.textContent = '₱0.00';
+        });
+
+        // Validate and submit form on confirm
+        modalConfirmButton.addEventListener('click', function () {
+            const receivedAmount = parseFloat(modalAmountReceived.value || 0);
+
+            if (receivedAmount < totalAmount) {
+                alert('The received amount is less than the payable amount.');
+                return;
+            }
+
+            if (!customerNameInput || !customerNameInput.value.trim()) {
+                alert('Customer name is required.');
+                return;
+            }
+            if (!notesInput || !notesInput.value.trim()) {
+                alert('Notes are required.');
+                return;
+            }
+
+            // Update form values
+            placeOrderForm.querySelector('input[name="amount_received"]').value = receivedAmount;
+            placeOrderForm.querySelector('input[name="customer_name"]').value = customerNameInput.value.trim();
+            placeOrderForm.querySelector('input[name="notes"]').value = notesInput.value.trim();
+
+            // Submit form
+            placeOrderForm.submit();
+        });
+    });
+</script>
+
+
+
+
                     </div>
-
-                    <input type="text" class="form-control dark-box mb-3" placeholder="Customer name">
-                    <textarea class="form-control dark-box mb-3" rows="3" placeholder="Notes"></textarea>
-
-                    <button class="btn confirm-btn w-100" data-bs-toggle="modal" data-bs-target="#confirmModal">Confirm</button>
-                    <x-payment-confirm />
                 </div>
             </div>
         </div>

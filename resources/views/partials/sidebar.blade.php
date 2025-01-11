@@ -64,15 +64,19 @@
                 <i class="lni lni-book"></i> <!-- Fallback icon -->
                 <span>Receipts</span>
             </a>
-        </li>
-        <!-- Cash
-        <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
-                <i class="lni lni-wallet"></i>
-                <span>Cash</span>
-            </a>
-        </li> -->
+        </li>    
+        <div class="sidebar-footer">
+    <form action="{{ route('logout') }}" method="POST" id="logout-form">
+        @csrf
+        <button type="submit" class="sidebar-link" style="background: none; border: none; padding: 0;">
+            <i class="lni lni-exit"></i>
+            <span>Logout</span>
+        </button>
+    </form>
+</div>
     </ul>
+
+
 </aside>
 
 
