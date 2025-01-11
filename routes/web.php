@@ -47,6 +47,7 @@ Route::group(['prefix' => 'staff', 'middleware' => ['role:staff']], function () 
     Route::post('/cart/store', [PosController::class, 'store'])->name('cart.store');
     Route::post('/cart/update', [PosController::class, 'update'])->name('cart.update');
     Route::post('/cart/discount', [PosController::class, 'applyDiscount'])->name('cart.applyDiscount');
+    Route::post('/place-order', [PosController::class, 'placeOrder'])->name('place.order');
 
 
 

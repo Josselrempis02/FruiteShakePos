@@ -22,4 +22,37 @@
 }
 
 
+.amount-btn{
+    background-color:#00473e ;
+    color: white;
+    border: none;
+    font-size: 18px;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
 
+}
+
+
+.amount-btn:hover{
+    color: none;
+}
+
+.exact-amount-btn{
+    background-color: #dd4e75;
+    color: white;
+    border: none;
+    font-size: 18px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.proceed-btn{
+    background-color:#f27642 ;
+    color: white;
+    border: none;
+    font-size: 18px;
+    padding: 15px;
+    border-radius: 10px;
+}
