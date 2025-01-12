@@ -116,6 +116,7 @@ class PosController extends Controller
         ]);
     
         $total = session('cart_total') ?? Cart::getTotal();
+        $discountAmount = session('discount_amount') ?? 0;
         $amountReceived = $request->amount_received;
     
         if ($amountReceived < $total) {
@@ -130,6 +131,7 @@ class PosController extends Controller
             'customer_name' => $request->customer_name,
             'notes' => $request->notes,
             'subtotal' => Cart::getSubTotal(),
+            'discount' => $discountAmount,
             'total' => $total,
             'payment_method' => 'Cash',
         ]);

@@ -11,13 +11,10 @@
     </div>
 </section>
 
-  
-
-
-  <section style="background-color: white;" class="m-3">
+  <section style="background-color: white; border-radius: 1rem;" class="m-3 ">
   <div class="container-fluid my-5">
-        <h2 class="fw-bold">Receipts</h2>
-        <p class="text-muted">List of all orders with downloadable receipts.</p>
+        
+        <p class="text-muted pt-3">List of all orders with downloadable receipts.</p>
 
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -31,46 +28,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Example receipt row 1 -->
+                @forelse ($orderList as $order)
                     <tr>
-                        <td>ORD001</td>
-                        <td>John Doe</td>
-                        <td>2025-01-01</td>
-                        <td>₱1,500.00</td>
+                        <td>{{ $order->order_number }}</td>
+                        <td>{{ $order->customer_name }}</td>
+                        <td>{{ $order->created_at->format('Y-m-d') }}</td> 
+                        <td>₱{{ number_format($order->total, 2) }}</td>
                         <td>
                             <!-- Download Button -->
-                            <button class="btn btn-primary">
+                            <a href="{{ route('orders.receipt', $order->id) }}" class="btn btn-primary">
                                 <i class="fas fa-download"></i> Download Receipt
-                            </button>
+                            </a>
                         </td>
                     </tr>
-                    <!-- Example receipt row 2 -->
+            
+                    @empty
                     <tr>
-                        <td>ORD002</td>
-                        <td>Jane Smith</td>
-                        <td>2025-01-02</td>
-                        <td>₱2,000.00</td>
-                        <td>
-                            <button class="btn btn-primary">
-                                <i class="fas fa-download"></i> Download Receipt
-                            </button>
-                        </td>
+                        <td colspan="4" class="text-center">No receipts found.</td>
                     </tr>
-                    <!-- Example receipt row 3 -->
-                    <tr>
-                        <td>ORD003</td>
-                        <td>Mark Lee</td>
-                        <td>2025-01-03</td>
-                        <td>₱800.00</td>
-                        <td>
-                            <button class="btn btn-primary">
-                                <i class="fas fa-download"></i> Download Receipt
-                            </button>
-                        </td>
-                    </tr>
-                    <!-- Add more rows for other orders as needed -->
+                  @endforelse
                 </tbody>
             </table>
+
+            {{ $orderList->links() }}
         </div>
     </div>
 </section>

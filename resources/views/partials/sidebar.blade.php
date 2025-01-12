@@ -60,7 +60,7 @@
 
         <!-- Receipts -->
         <li class="sidebar-item">
-            <a href="{{ route('staff.receipt') }}" class="sidebar-link">
+            <a href="{{ route('receipts.index') }}" class="sidebar-link">
                 <i class="lni lni-book"></i> <!-- Fallback icon -->
                 <span>Receipts</span>
             </a>

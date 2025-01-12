@@ -35,10 +35,7 @@ class PagesController extends Controller
         return view('pages.report');
     }
 
-    public function showReceipts ()
-    {
-        return view('pages.receipts');
-    }
+
 
 
     public function showStocks ($id)
