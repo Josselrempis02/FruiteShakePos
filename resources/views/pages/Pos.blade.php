@@ -9,7 +9,7 @@
         <h1>Point of Sale</h1>
         <h3>Home > POS</h3>
     </div>
-
+    <x-error-success-message/>
     <div class="container-fluid my-4 border border-2 rounded p-4 pos-card">
         <div class="row">
             <!-- Item Grid -->

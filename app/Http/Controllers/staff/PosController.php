@@ -28,7 +28,7 @@ class PosController extends Controller
             'quantity' => $request->quantity,
         ]);
 
-        return redirect()->back()->with('success', 'Product added to cart!');
+        return redirect()->back();
     }
 
     public function update(Request $request)
@@ -141,6 +141,15 @@ class PosController extends Controller
                 'price' => $item->price,
                 'quantity' => $item->quantity,
             ]);
+
+            $product = Product::find($item->id); 
+            if ($product) {
+                $product->stock -= $item->quantity;
+                if ($product->stock < 0) {
+                    return redirect()->back()->with(['error' => "Insufficient stock for product: {$product->name}."]);
+                }
+                $product->save();
+            }
         }
     
         Cart::clear();
