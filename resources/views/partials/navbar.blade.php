@@ -8,26 +8,7 @@
         <!-- Navbar collapse -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav d-flex align-items-center">
-    <h1 class="mb-0">test</h1>
-    <!-- Dropdown menu -->
-    <li class="nav-item dropdown ms-auto">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ asset('assets/images/account.svg') }}" class="avatar img-fluid rounded-circle" alt="User" style="width: 40px; height: 40px;">
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end rounded shadow">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="dropdown-item text-danger" style="border: none; background: none; padding: 0; margin: 0; color: inherit; cursor: pointer;">
-                        Logout
-                    </button>
-                </form>
-            </li>
-        </ul>
-    </li>
+     <h1 class="mb-0 title">Fruit Shake</h1>
 </ul>
 
 

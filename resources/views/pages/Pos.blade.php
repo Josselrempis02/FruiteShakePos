@@ -161,75 +161,75 @@
                     </div>
 
                     <div class="mb-3">
-    <div class="d-flex justify-content-between">
-        <span>Subtotal</span>
-        <span class="subtotal">${{ number_format(Cart::getSubTotal(), 2) }}</span>
-    </div>
-    @if (session('discount_amount'))
-        <div class="d-flex justify-content-between">
-            <span>Discount</span>
-            <span class="discount">- ${{ number_format(session('discount_amount'), 2) }}</span>
-        </div>
-    @endif
-    <div class="d-flex justify-content-between">
-        <span>Total</span>
-        <span class="total">
-            @if (session('cart_total'))
-                ${{ number_format(session('cart_total'), 2) }}
-            @else
-                ${{ number_format(Cart::getTotal(), 2) }}
-            @endif
-        </span>
-    </div>
-
-    <input type="text" class="form-control dark-box mt-3 mb-3" placeholder="Customer name" name="customer_name" required>
-    <textarea class="form-control dark-box mb-3" rows="3" placeholder="Notes" name="notes" required></textarea>
-
-    <button class="btn confirm-btn w-100" 
-        data-bs-toggle="modal" 
-        data-bs-target="#confirmModal"
-        data-total="{{ session('cart_total') ?? Cart::getTotal() }}">
-        Confirm
-    </button>
-
-    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" style="background-color: #f4c983;">
-            <div class="modal-body">
-                <h5 class="text-center">Amount Payable</h5>
-                <h2 class="text-center" id="modalAmountPayable" style="color: #333;">₱0.00</h2>
-
-                <label for="modalAmountReceived" class="form-label">Amount Received</label>
-                <input type="number" id="modalAmountReceived" class="form-control" required>
-
-                <p class="text-center mt-2">Change: <span id="modalChangeDisplay">₱0.00</span></p>
-
-                <!-- Buttons for predefined amounts -->
-                <div class="amount-buttons-container">
-                    <button type="button" class="btn amount-btn" data-amount="20">20</button>
-                    <button type="button" class="btn amount-btn" data-amount="50">50</button>
-                    <button type="button" class="btn amount-btn" data-amount="100">100</button>
-                    <button type="button" class="btn amount-btn" data-amount="200">200</button>
-                    <button type="button" class="btn amount-btn" data-amount="300">300</button>
-                    <button type="button" class="btn amount-btn" data-amount="400">400</button>
-                    <button type="button" class="btn amount-btn" data-amount="500">500</button>
-                    <button type="button" class="btn amount-btn" data-amount="800">800</button>
-                    <button type="button" class="btn amount-btn" data-amount="1000">1000</button>
+            <div class="d-flex justify-content-between">
+                <span>Subtotal</span>
+                <span class="subtotal">${{ number_format(Cart::getSubTotal(), 2) }}</span>
+            </div>
+            @if (session('discount_amount'))
+                <div class="d-flex justify-content-between">
+                    <span>Discount</span>
+                    <span class="discount">- ${{ number_format(session('discount_amount'), 2) }}</span>
                 </div>
+            @endif
+            <div class="d-flex justify-content-between">
+                <span>Total</span>
+                <span class="total">
+                    @if (session('cart_total'))
+                        ${{ number_format(session('cart_total'), 2) }}
+                    @else
+                        ${{ number_format(Cart::getTotal(), 2) }}
+                    @endif
+                </span>
+            </div>
 
-                <button type="button" class="btn exact-amount-btn w-100">Exact Amount</button>
-                <button id="modalConfirmButton" class="btn proceed-btn w-100 mt-2">Proceed</button>
+            <input type="text" class="form-control dark-box mt-3 mb-3" placeholder="Customer name" name="customer_name" required>
+            <textarea class="form-control dark-box mb-3" rows="3" placeholder="Notes" name="notes" required></textarea>
 
-                <form id="placeOrderForm" action="{{ route('place.order') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="amount_received" id="amountReceivedInput">
-                        <input type="hidden" name="customer_name">
-                        <input type="hidden" name="notes">
-                    </form>
+            <button class="btn confirm-btn w-100" 
+                data-bs-toggle="modal" 
+                data-bs-target="#confirmModal"
+                data-total="{{ session('cart_total') ?? Cart::getTotal() }}">
+                Confirm
+            </button>
+
+            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background-color: #f4c983;">
+                    <div class="modal-body">
+                        <h5 class="text-center">Amount Payable</h5>
+                        <h2 class="text-center" id="modalAmountPayable" style="color: #333;">₱0.00</h2>
+
+                        <label for="modalAmountReceived" class="form-label">Amount Received</label>
+                        <input type="number" id="modalAmountReceived" class="form-control" required>
+
+                        <p class="text-center mt-2">Change: <span id="modalChangeDisplay">₱0.00</span></p>
+
+                        <!-- Buttons for predefined amounts -->
+                        <div class="amount-buttons-container">
+                            <button type="button" class="btn amount-btn" data-amount="20">20</button>
+                            <button type="button" class="btn amount-btn" data-amount="50">50</button>
+                            <button type="button" class="btn amount-btn" data-amount="100">100</button>
+                            <button type="button" class="btn amount-btn" data-amount="200">200</button>
+                            <button type="button" class="btn amount-btn" data-amount="300">300</button>
+                            <button type="button" class="btn amount-btn" data-amount="400">400</button>
+                            <button type="button" class="btn amount-btn" data-amount="500">500</button>
+                            <button type="button" class="btn amount-btn" data-amount="800">800</button>
+                            <button type="button" class="btn amount-btn" data-amount="1000">1000</button>
+                        </div>
+
+                        <button type="button" class="btn exact-amount-btn w-100">Exact Amount</button>
+                        <button id="modalConfirmButton" class="btn proceed-btn w-100 mt-2">Proceed</button>
+
+                        <form id="placeOrderForm" action="{{ route('place.order') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="amount_received" id="amountReceivedInput">
+                                <input type="hidden" name="customer_name">
+                                <input type="hidden" name="notes">
+                            </form>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

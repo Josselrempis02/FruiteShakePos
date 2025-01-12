@@ -65,16 +65,18 @@
                 <span>Receipts</span>
             </a>
         </li>    
-        <div class="sidebar-footer">
+       
+    </ul>
+
+    <div class="sidebar-footer">
     <form action="{{ route('logout') }}" method="POST" id="logout-form">
         @csrf
-        <button type="submit" class="sidebar-link" style="background: none; border: none; padding: 0;">
+        <button type="submit" class="sidebar-link logout-btn">
             <i class="lni lni-exit"></i>
             <span>Logout</span>
         </button>
     </form>
 </div>
-    </ul>
 
 
 </aside>
