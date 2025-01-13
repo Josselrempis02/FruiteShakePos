@@ -24,9 +24,12 @@ class CheckRole
                 return $next($request);
             }
         }
-    
-        // Redirect to unauthorized page if role doesn't match
-        return redirect('/unauthorized');
+
+        session()->flash('alert', 'You do not have permission to access this page.');
+
+        // Redirect back to the previous page or home
+        return redirect()->back();
     }
+
     
 }

@@ -29,6 +29,13 @@
 
 <body>
     <div class="wrapper">
+        
+    @if(session('alert'))
+        <script type="text/javascript">
+            alert("{{ session('alert') }}");
+        </script>
+    @endif
+
     <!-- Sidebar -->
     @include('partials.sidebar')
     <!-- Sidebar Ends -->

@@ -10,11 +10,20 @@
     <ul class="sidebar-nav">
         <!-- Dashboard -->
         <li class="sidebar-item">
-            <a href="{{ route('staff.dashboard') }}" class="sidebar-link">
-                <i class="lni lni-dashboard"></i>
-                <span>Dashboard</span>
-            </a>
-        </li>
+        @if(Route::has(Auth::user()->role->name . '.dashboard'))
+        <a href="{{ route(Auth::user()->role->name . '.dashboard') }}" class="sidebar-link">
+            <i class="lni lni-dashboard"></i>
+            <span>Dashboard</span>
+        </a>
+    @else
+        <a href="#" class="sidebar-link">
+            <i class="lni lni-dashboard"></i>
+            <span>Dashboard</span> <!-- Fallback message -->
+        </a>
+    @endif
+
+    </li>
+
 
         <!-- POS -->
         <li class="sidebar-item">

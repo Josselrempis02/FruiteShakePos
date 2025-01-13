@@ -15,30 +15,35 @@ class SalesReportController extends Controller
     }
 
     public function generate(Request $request)
-    {
-        // Parse the start and end dates using Carbon
-        $startDate = Carbon::parse($request->start_date)->startOfDay();
-        $endDate = Carbon::parse($request->end_date)->endOfDay();
+{
+    // Parse the start and end dates using Carbon
+    $startDate = Carbon::parse($request->start_date)->startOfDay();
+    $endDate = Carbon::parse($request->end_date)->endOfDay();
     
-        $orders = Order::whereBetween('created_at', [$startDate, $endDate])
-            ->with('items')
-            ->get();
+    // Fetch orders within the date range
+    $orders = Order::whereBetween('created_at', [$startDate, $endDate])
+        ->with('items')
+        ->get();
     
-        $salesData = $orders->map(function ($order) {
-            return (object)[
-                'date' => $order->created_at->format('Y-m-d'),
-                'product' => $order->items->pluck('product_name')->implode(', '),
-                'quantity' => $order->items->sum('quantity'),
-                'total_sales' => $order->total,
-            ];
-        });
+    // Aggregate sales data by date
+    $salesData = $orders->groupBy(function ($order) {
+        return $order->created_at->format('Y-m-d');  // Group by date
+    })->map(function ($ordersPerDay) {
+        // Sum total sales for the grouped orders
+        $totalSales = $ordersPerDay->sum('total');
+        return (object)[
+            'date' => $ordersPerDay->first()->created_at->format('Y-m-d'),
+            'total_sales' => $totalSales,
+        ];
+    });
     
-        return view('pages.report', [
-            'sales' => $salesData,
-            'start_date' => $startDate->toDateString(),
-            'end_date' => $endDate->toDateString(),
-        ]);
-    }
+    return view('pages.report', [
+        'sales' => $salesData,
+        'start_date' => $startDate->toDateString(),
+        'end_date' => $endDate->toDateString(),
+    ]);
+}
+
     
     
     public function download(Request $request)

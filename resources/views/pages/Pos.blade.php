@@ -7,7 +7,7 @@
 <section class="container-fluid mt-4">
     <div class="dashboard-text pl-3">
         <h1>Point of Sale</h1>
-        <h3>Home > POS</h3>
+        <h3 class="text-muted">Home > POS</h3>
     </div>
     <x-error-success-message/>
     <div class="container-fluid my-4 border border-2 rounded p-4 pos-card">

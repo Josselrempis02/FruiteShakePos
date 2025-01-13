@@ -15,14 +15,27 @@
     
         <!-- Card 1 -->
         <div class="col-md-4">
+        @php
+            function formatCurrency($amount) {
+                if ($amount >= 1000000) {
+                    return '₱' . number_format($amount / 1000000, 1) . 'M'; // Format in millions
+                } elseif ($amount >= 1000) {
+                    return '₱' . number_format($amount / 1000, 1) . 'K'; // Format in thousands
+                } else {
+                    return '₱' . number_format($amount, 2); // Regular formatting
+                }
+            }
+        @endphp
             <div class="card shadow h-100 border-0" style="background-color: #004C4C; color: white;">
                 <div class="card-body d-flex flex-column justify-content-between">
                     <div>
-                        <h5 class="fw-bold">$2k</h5>
-                        <small>9 February 2024</small>
+                      <small>Total Sales (Daily)</small>
+                      <h5 class="fw-bold">{{ formatCurrency($totalSales) }}</h5>
+
+                       
                     </div>
                     <div class="text-end">
-                        <i class="fa-solid fa-dollar-sign fa-2x"></i>
+                        <i class="fa-solid fa-peso-sign fa-2x"></i>
                     </div>
                 </div>
                 <div class="p-2" style="height: 5px; background: linear-gradient(to right, #FFD700, #FFD700 60%, transparent 60%);"></div>
@@ -34,8 +47,8 @@
                 <div class="card-body d-flex flex-column justify-content-between">
                     <div>
                         <small>Monthly Revenue</small>
-                        <h5 class="fw-bold">$55k</h5>
-                        <small>1 Jan - 1 Feb</small>
+                        <h5 class="fw-bold">{{ formatCurrency($monthlyRevenue) }}</h5>
+                       
                     </div>
                     <div class="text-end">
                         <i class="fa-solid fa-chart-pie fa-2x"></i>
@@ -50,7 +63,7 @@
                 <div class="card-body d-flex flex-column justify-content-between">
                     <div>
                         <small>Product</small>
-                        <h5 class="fw-bold">25</h5>
+                        <h5 class="fw-bold">{{ $productCount }}</h5>
                     </div>
                     <div class="text-end">
                         <i class="fa-solid fa-box fa-2x"></i>
@@ -61,73 +74,57 @@
         </div>
     </div>
 
-    <!-- Chart Section -->
     <div class="card mt-4 shadow border-0">
-        <div class="card-body">
-            <h5 class="fw-bold">Overview</h5>
-            <canvas id="salesRevenueChart" style="max-height: 400px;"></canvas>
-
-        </div>
+    <div class="card-body">
+        <h5 class="fw-bold">Overview</h5>
+        <canvas id="salesRevenueChart" style="max-height: 400px;"></canvas>
     </div>
+</div>
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const ctx = document.getElementById('salesRevenueChart').getContext('2d');
-    const salesRevenueChart = new Chart(ctx, {
+    var labels = @json($labels);
+    var sales = @json($sales);
+
+    var ctx = document.getElementById('salesRevenueChart').getContext('2d');
+    var salesRevenueChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-            datasets: [
-                {
-                    label: 'Sales',
-                    data: [3000, 4200, 1500, 5000, 4500, 3800, 4700, 4800, 4300, 4000, 3100, 4900],
-                    borderColor: '#FF3030',
-                    backgroundColor: 'transparent',
-                    borderWidth: 2,
-                    tension: 0.4,
-                    pointStyle: 'circle',
-                    pointBackgroundColor: '#FF3030',
-                    pointRadius: 5
-                },
-                {
-                    label: 'Revenue',
-                    data: [2000, 2500, 3000, 2000, 3500, 3600, 4000, 3700, 3200, 3300, 2900, 3000],
-                    borderColor: '#FFD700',
-                    backgroundColor: 'transparent',
-                    borderWidth: 2,
-                    tension: 0.4,
-                    pointStyle: 'circle',
-                    pointBackgroundColor: '#FFD700',
-                    pointRadius: 5
-                }
-            ]
+            labels: labels,
+            datasets: [{
+                label: 'Total Sales',
+                data: sales,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: true,
+                tension: 0.4,
+            }]
         },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
             scales: {
+                x: {
+                    type: 'category',
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
+                },
                 y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return value + 'k';
-                        }
+                    title: {
+                        display: true,
+                        text: 'Sales (₱)'
                     }
                 }
             },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                }
-            }
+            responsive: true,
+            maintainAspectRatio: false
         }
     });
-});
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 
 
 @endsection

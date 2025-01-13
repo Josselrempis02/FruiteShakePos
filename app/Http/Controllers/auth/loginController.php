@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\auth;
 
+use Carbon\Carbon;
+use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -48,18 +51,49 @@ class loginController extends Controller
 
     
 
+    private function getDashboardData()
+    {
+        $product = Product::all();
+        $productCount = $product->count();
+
+        $monthlyRevenue = Order::whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->sum('total');
+
+        $totalSales = Order::whereDate('created_at', Carbon::today())->sum('total');
+
+        $salesData = Order::selectRaw('MONTH(created_at) as month, SUM(total) as total_sales')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        $labels = $salesData->pluck('month')->map(function ($month) {
+            return Carbon::create()->month($month)->format('F');
+        });
+        $sales = $salesData->pluck('total_sales');
+
+        return compact('product', 'productCount', 'monthlyRevenue', 'totalSales', 'labels', 'sales');
+    }
+
     public function adminDashboard()
     {
-        return view('admin.dashboard');
+        $dashboardData = $this->getDashboardData();
+        return view('dashboard.dashboard', $dashboardData);
     }
 
     public function superadminDashboard()
     {
-        return view('superadmin.dashboard');
+        $dashboardData = $this->getDashboardData();
+        return view('dashboard.dashboard', $dashboardData);
     }
 
     public function staffDashboard()
     {
-        return view('staff.dashboard');
+        $dashboardData = $this->getDashboardData();
+        return view('dashboard.dashboard', $dashboardData);
     }
+
+
+    
 }

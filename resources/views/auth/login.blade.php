@@ -17,9 +17,11 @@
                         <div class="card-body p-5 bg" style="border-radius: 3rem;">
 
                             <div class="mt-md-4 pb-5">
+                                
 
                                 <h2 class="fw-bold mb-2 text-uppercase text-center text-main">Fruit Shake Pos</h2>
                                 <p class="mb-5 text-center text">Please enter your credentials below to continue</p>
+                                <x-error-success-message/>
 
                                 <!-- Start Form -->
                                 <form method="POST" action="{{ route('login') }}">
@@ -27,16 +29,19 @@
                                     <div data-mdb-input-init class="form-outline form-white mb-4">
                                         <label for="exampleInputEmail1" class="form-label text">Username</label>
                                         <input type="email" id="typeEmailX" class="form-control form-control-lg input" placeholder="Enter your username" name="email" required />
+                                        @error('email')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+
                                     </div>
 
                                     <div data-mdb-input-init class="form-outline form-white mb-4">
                                         <label class="form-label text" for="typePasswordX">Password</label>
                                         <input type="password" id="typePasswordX" class="form-control form-control-lg input" placeholder="Enter your password" name="password" required />
+                                        @error('password')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
-
-                                    <p class="small mb-5 pb-lg-2 text-end text">
-                                        <a class="text" href="#!">Forgot password?</a>
-                                    </p>
 
                                     <div class="text-center submit-btn">
                                         <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg px-5" type="submit">Login</button>
@@ -52,9 +57,7 @@
 
                             </div>
 
-                            <div>
-                                <p class="mb-0 text-center text">Don't have an account? <a href="#!" class="text">Sign Up</a></p>
-                            </div>
+                         
 
                         </div>
                     </div>

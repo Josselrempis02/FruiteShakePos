@@ -33,42 +33,39 @@
             </div>
         </form>
 
-        <!-- Sales Table -->
-        @isset($sales)
-        <div id="salesReport" class="table-responsive">
-            <table class="table table-bordered text-center">
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>Date</th>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Total Sales</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($sales as $index => $sale)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $sale->date }}</td>
-                            <td>{{ $sale->product }}</td>
-                            <td>{{ $sale->quantity }}</td>
-                            <td>₱{{ number_format($sale->total_sales, 2) }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center">No sales found for the selected date range.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+   <!-- Sales Table -->
+@isset($sales)
+<div id="salesReport" class="table-responsive">
+    <table class="table table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Total Sales</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($sales as $index => $sale)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $sale->date }}</td>
+                    <td>₱{{ number_format($sale->total_sales, 2) }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="3" class="text-center">No sales found for the selected date range.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 
-        <!-- PDF Download Button -->
-        <div class="text-end mt-3">
-            <a href="{{ route('sales-report.download', ['start_date' => $start_date, 'end_date' => $end_date]) }}" class="btn btn-success">Download PDF</a>
-        </div>
-        @endisset
+<!-- PDF Download Button -->
+<div class="text-end mt-3">
+    <a href="{{ route('sales-report.download', ['start_date' => $start_date, 'end_date' => $end_date]) }}" class="btn btn-success">Download PDF</a>
+</div>
+@endisset
+
     </div>
 </section>
 
