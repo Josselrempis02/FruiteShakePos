@@ -7,12 +7,24 @@
 
         <!-- Navbar collapse -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav d-flex align-items-center">
-     <h1 class="mb-0 title">Fruit Shake</h1>
-</ul>
+            <ul class="navbar-nav d-flex align-items-center w-100 justify-content-between">
+                <h1 class="mb-0 title">Fruit Shake</h1>
 
-
-                </li>
+                <!-- Display the authenticated user's name and role -->
+                <ul class="navbar-nav ms-auto">
+                    @auth
+                        <li class="nav-item">
+                            <span class="nav-link text-dark">
+                                {{ auth()->user()->name }} 
+                                ({{ ucfirst(auth()->user()->role->name) }})
+                            </span>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">Login</a>
+                        </li>
+                    @endauth
+                </ul>
             </ul>
         </div>
     </div>

@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\staff\PosController;
 use App\Http\Controllers\auth\loginController;
+use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\staff\PagesController;
 
 Route::get('/', function () {
@@ -52,6 +53,11 @@ Route::group(['prefix' => 'staff', 'middleware' => ['role:staff']], function () 
 
     Route::get('/receipts', [ReceiptController::class, 'showReceipt'])->name('receipts.index');
     Route::get('/orders/{id}/receipt', [ReceiptController::class, 'downloadReceipt'])->name('orders.receipt');
+
+    Route::get('/sales-report', [SalesReportController::class, 'index'])->name('sales-report.index');
+    Route::post('/sales-report/generate', [SalesReportController::class, 'generate'])->name('sales-report.generate');
+    Route::get('/sales-report/download', [SalesReportController::class, 'download'])->name('sales-report.download');
+
 
 
 
