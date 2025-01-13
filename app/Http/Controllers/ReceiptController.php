@@ -9,9 +9,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class ReceiptController extends Controller
 {
     
-    public function showReceipt()
+    public function showReceipt(Request $request)
     {
-        $orderList = Order::latest()->paginate(10);
+        $query = $request->input('search');
+        $orderList = Order::when($query, function ($q) use ($query) {
+            $q->where('customer_name', 'like', '%' . $query . '%');
+        })->paginate(10);
         return view('pages.receipts', compact('orderList'));
     }
 

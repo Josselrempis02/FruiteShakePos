@@ -11,15 +11,36 @@
 .add-product-btn {
     background-color: #f27642;
     color: white;
-    padding: 10px;
-    border-radius: 10px;
+    padding: 7px;
+    border-radius: 5px;
     border: none;
 }
 
 
-.category-btn:focus{
-    background-color: #f27642;
+.category-btn {
+    transition: background-color 0.3s, color 0.3s;
 }
+
+.category-btn.btn-primary {
+    background-color: #f27642;
+    border-color: #f27642;
+    color: white;
+}
+
+.category-btn.btn-light:hover {
+    background-color: #f27642;
+    border-color: #f27642;
+    color: white;
+}
+
+.category-btn:focus {
+    background-color: #f27642;
+    border-color: #f27642;
+    color: white;
+    outline: none;
+    box-shadow: 0 0 0 0.25rem rgba(242, 118, 66, 0.25);
+}
+
 
 
 .amount-btn{

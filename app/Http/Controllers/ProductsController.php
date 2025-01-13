@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Display a listing of the resource
-        $products = Product::paginate(10);
+        $query = $request->input('search');
+    $products = Product::when($query, function ($q) use ($query) {
+        $q->where('name', 'like', '%' . $query . '%');
+    })->paginate(10);
         return view('pages.product', compact('products'));
     }
 

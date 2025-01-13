@@ -7,7 +7,7 @@
 <section class="container-fluid mt-4">
 <div class="dashboard-text mb-2 pl-3">
         <h1>Dashboard</h1>
-        <h3>Home > Dashboard</h3>
+        <h3 class="fs-6 text-muted">Home > Dashboard</h3>
     </div>
 
     <!-- Row for 3 Cards -->

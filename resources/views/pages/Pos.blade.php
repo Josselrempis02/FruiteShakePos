@@ -60,7 +60,7 @@
                 <button class="btn btn-sm btn-outline-secondary update-quantity ms-1" data-id="{{ $item->id }}" data-action="increase">+</button>
             </div>
             <div class="item-price text-nowrap price">
-                ${{ number_format($item->price * $item->quantity, 2) }}
+            ₱{{ number_format($item->price * $item->quantity, 2) }}
             </div>
         </li>
     @endforeach
@@ -162,22 +162,22 @@
 
                     <div class="mb-3">
             <div class="d-flex justify-content-between">
-                <span>Subtotal</span>
-                <span class="subtotal">${{ number_format(Cart::getSubTotal(), 2) }}</span>
+                <span>Subtotal</span> 
+                <span class="subtotal">₱{{ number_format(Cart::getSubTotal(), 2) }}</span>
             </div>
             @if (session('discount_amount'))
                 <div class="d-flex justify-content-between">
                     <span>Discount</span>
-                    <span class="discount">- ${{ number_format(session('discount_amount'), 2) }}</span>
+                    <span class="discount">- ₱{{ number_format(session('discount_amount'), 2) }}</span>
                 </div>
             @endif
             <div class="d-flex justify-content-between">
                 <span>Total</span>
                 <span class="total">
                     @if (session('cart_total'))
-                        ${{ number_format(session('cart_total'), 2) }}
+                    ₱{{ number_format(session('cart_total'), 2) }}
                     @else
-                        ${{ number_format(Cart::getTotal(), 2) }}
+                    ₱{{ number_format(Cart::getTotal(), 2) }}
                     @endif
                 </span>
             </div>
@@ -320,3 +320,5 @@
 
 
     @endsection
+
+    

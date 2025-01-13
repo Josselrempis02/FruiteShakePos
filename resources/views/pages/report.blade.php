@@ -4,10 +4,10 @@
 
 @section('content')
 
-<section class="container-fluid mt-4 d-flex align-items-center justify-content-between">
+<section class="container-fluid mt-4 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between">
     <div class="dashboard-text">
-        <h1 class="pl-3">Sales Report</h1>
-        <h3 class="pl-3">Home &gt; Sales Report</h3>
+        <h1 class="pl-0 pl-md-3">Sales Report</h1>
+        <h3 class="text-muted pl-0 pl-md-3">Home &gt; Sales Report</h3>
     </div>
 </section>
 
@@ -19,15 +19,15 @@
         <form method="POST" action="{{ route('sales-report.generate') }}" class="mb-4">
             @csrf
             <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-12 col-md-4 mb-3">
                     <label for="startDate" class="form-label">Start Date</label>
                     <input type="date" id="startDate" name="start_date" class="form-control" value="{{ old('start_date') }}" required>
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-12 col-md-4 mb-3">
                     <label for="endDate" class="form-label">End Date</label>
                     <input type="date" id="endDate" name="end_date" class="form-control" value="{{ old('end_date') }}" required>
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
+                <div class="col-12 col-md-4 d-flex align-items-center mt-3 mt-md-0">
                     <button type="submit" class="btn btn-primary w-100">Generate Report</button>
                 </div>
             </div>
@@ -35,7 +35,7 @@
 
         <!-- Sales Table -->
         @isset($sales)
-        <div id="salesReport">
+        <div id="salesReport" class="table-responsive">
             <table class="table table-bordered text-center">
                 <thead class="table-dark">
                     <tr>
