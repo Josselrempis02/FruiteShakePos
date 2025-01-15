@@ -14,7 +14,7 @@ class ReceiptController extends Controller
         $query = $request->input('search');
         $orderList = Order::when($query, function ($q) use ($query) {
             $q->where('customer_name', 'like', '%' . $query . '%');
-        })->paginate(10);
+        })->latest()->paginate(10);
         return view('pages.receipts', compact('orderList'));
     }
 

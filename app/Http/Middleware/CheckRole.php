@@ -18,16 +18,22 @@ class CheckRole
     {
         if (Auth::check()) {
             $user = Auth::user();
-            if (($role == 'superadmin' && $user->role_id === 1) ||
-                ($role == 'admin' && $user->role_id === 2) ||
-                ($role == 'staff' && $user->role_id === 3)) {
+
+            
+            $roleHierarchy = [
+                'superadmin' => ['superadmin', 'admin', 'staff'],
+                'admin' => ['admin', 'staff'],
+                'staff' => ['staff'],
+            ];
+
+            $userRole = $user->role->name; 
+
+            if (in_array($role, $roleHierarchy[$userRole] ?? [])) {
                 return $next($request);
             }
         }
 
         session()->flash('alert', 'You do not have permission to access this page.');
-
-        // Redirect back to the previous page or home
         return redirect()->back();
     }
 

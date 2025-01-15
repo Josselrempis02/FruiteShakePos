@@ -58,13 +58,4 @@ Route::group(['prefix' => 'staff', 'middleware' => ['role:staff']], function () 
     Route::get('/orders/{id}/receipt', [ReceiptController::class, 'downloadReceipt'])->name('orders.receipt');
 
     
-
-
-
-
-
-
-
-
-
 });
