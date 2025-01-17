@@ -55,7 +55,7 @@
         <li class="sidebar-item">
             <a href="{{ route('staff.index') }}" class="sidebar-link">
                 <i class="lni lni-users"></i>
-                <span>Staff</span>
+                <span>Add Staff or Admin</span>
             </a>
         </li>
 

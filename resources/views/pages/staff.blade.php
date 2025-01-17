@@ -8,13 +8,13 @@
     <div class="row align-items-center justify-content-between">
         <div class="col-md-6 mb-3 mb-md-0">
             <div class="dashboard-text">
-                <h1>Staff</h1>
-                <h3 class="fs-6 text-muted">Home &gt; Staff</h3>
+                <h1>Add Staff or Admin</h1>
+                <h3 class="fs-6 text-muted">Home &gt; Users &gt; Add Staff/Admin</h3>
             </div>
         </div>
         <div class="col-md-6 text-md-end">
             <button type="button" class="btn btn-primary add-product-btn" data-bs-toggle="modal" data-bs-target="#addStaffModal">
-                Add Staff
+            Add Staff or Admin
             </button>
         </div>
     </div>
@@ -31,6 +31,7 @@
                     <tr class="orders-header">
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Role</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -39,6 +40,7 @@
                         <tr class="recent-orders-tr">
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
+                            <td>{{ $user->role->name }}</td>
                             <td>
                                 <!-- Edit Button -->
                                 <a href="#" 

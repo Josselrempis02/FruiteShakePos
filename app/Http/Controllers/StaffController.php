@@ -13,7 +13,7 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $users = User::where('role_id', 3)->paginate(10);
+        $users = User::whereIn('role_id', [2,3])->paginate(10);
         return view('pages.staff', compact('users'));
     }
 
@@ -34,13 +34,14 @@ class StaffController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
+            'role_id' => 'required|in:2,3', 
         ]);
         try {
         User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'role_id' => 3, 
+            'role_id' => $validated['role_id'],
         ]);
 
         return redirect()->back()->with('success', 'Staff added successfully.');
@@ -88,7 +89,7 @@ class StaffController extends Controller
     public function destroy(string $id)
     {
         try {
-            $user = User::where('id', $id)->where('role_id', 3)->first();
+            $user = User::where('id', $id)->where('role_id', [2,3])->first();
             $user->delete();
 
             return redirect()->back()->with('success', 'Staff deleted successfully.');
