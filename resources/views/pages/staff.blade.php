@@ -40,7 +40,7 @@
                         <tr class="recent-orders-tr">
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->role->name }}</td>
+                            <td>{{ ucfirst($user->role->name) }}</td>
                             <td>
                                 <!-- Edit Button -->
                                 <a href="#" 
