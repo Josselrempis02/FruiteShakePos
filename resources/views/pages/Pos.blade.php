@@ -137,24 +137,30 @@
                     </div>
 
                     <div class="mb-3">
-            <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between">
                 <span>Subtotal</span> 
                 <span class="subtotal">₱{{ number_format(Cart::getSubTotal(), 2) }}</span>
             </div>
-            @if (session('discount_amount'))
+
+            @if (session()->has('discount_amount'))
                 <div class="d-flex justify-content-between">
                     <span>Discount</span>
                     <span class="discount">- ₱{{ number_format(session('discount_amount'), 2) }}</span>
                 </div>
             @endif
-            <div class="d-flex justify-content-between">
-                <span>Total</span>
-                <span class="total">
-                  
-                    ₱{{ number_format(Cart::getTotal(), 2) }}
-                
-                </span>
-            </div>
+
+            @php
+            $subtotal = Cart::getSubTotal();
+            $discount = session('discount_amount', 0); // Default to 0 if no discount is set
+            $total = $subtotal - $discount;
+        @endphp
+
+        <div class="d-flex justify-content-between">
+            <span>Total</span>
+            <span class="total">₱{{ number_format($total, 2) }}</span>
+        </div>
+
+
 
             <input type="text" class="form-control dark-box mt-3 mb-3" placeholder="Customer name" name="customer_name" required>
             <textarea class="form-control dark-box mb-3" rows="3" placeholder="Notes" name="notes" required></textarea>
@@ -206,80 +212,111 @@
         </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const confirmButton = document.querySelector('.confirm-btn');
-        const modalAmountPayable = document.getElementById('modalAmountPayable');
-        const modalAmountReceived = document.getElementById('modalAmountReceived');
-        const modalChangeDisplay = document.getElementById('modalChangeDisplay');
-        const modalConfirmButton = document.getElementById('modalConfirmButton');
-        const placeOrderForm = document.getElementById('placeOrderForm');
-        const amountButtons = document.querySelectorAll('.amount-btn');
-        const exactAmountButton = document.querySelector('.exact-amount-btn');
+   document.addEventListener('DOMContentLoaded', function () {
+    const confirmButton = document.querySelector('.confirm-btn');
+    const modalAmountPayable = document.getElementById('modalAmountPayable');
+    const modalAmountReceived = document.getElementById('modalAmountReceived');
+    const modalChangeDisplay = document.getElementById('modalChangeDisplay');
+    const modalConfirmButton = document.getElementById('modalConfirmButton');
+    const placeOrderForm = document.getElementById('placeOrderForm');
+    const amountButtons = document.querySelectorAll('.amount-btn');
+    const exactAmountButton = document.querySelector('.exact-amount-btn');
 
-        const customerNameInput = document.querySelector('input[name="customer_name"]');
-        const notesInput = document.querySelector('textarea[name="notes"]');
+    const customerNameInput = document.querySelector('input[name="customer_name"]');
+    const notesInput = document.querySelector('textarea[name="notes"]');
 
-        let totalAmount = 0;
+    let totalAmount = 0;
 
-        // Update modal with total amount when the confirm button is clicked
-        confirmButton?.addEventListener('click', function () {
-            totalAmount = parseFloat(confirmButton.dataset.total || 0);
-            if (isNaN(totalAmount)) totalAmount = 0;
-            modalAmountPayable.textContent = `₱${totalAmount.toFixed(2)}`;
-            modalAmountReceived.value = '';
-            modalChangeDisplay.textContent = '₱0.00';
-        });
+    // **Function to update the total amount**
+    function updateTotalAmount() {
+        const totalElement = document.querySelector('.total'); // Select the total amount element
+        if (totalElement) {
+            totalAmount = parseFloat(totalElement.textContent.replace('₱', '').replace(',', '')) || 0;
+            confirmButton.dataset.total = totalAmount; // Update data-total dynamically
+        }
+    }
 
-        // Update change when amount is entered
-        modalAmountReceived.addEventListener('input', function () {
-            const receivedAmount = parseFloat(modalAmountReceived.value || 0);
-            const change = Math.max(receivedAmount - totalAmount, 0);
-            modalChangeDisplay.textContent = `₱${change.toFixed(2)}`;
-        });
+    // **Call updateTotalAmount whenever a product is added**
+    document.querySelectorAll('.product-form').forEach(form => {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
 
-        // Handle predefined amount buttons
-        amountButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const amount = parseFloat(button.dataset.amount || 0);
-                modalAmountReceived.value = amount;
-                const change = Math.max(amount - totalAmount, 0);
-                modalChangeDisplay.textContent = `₱${change.toFixed(2)}`;
-            });
-        });
-
-        // Handle exact amount button
-        exactAmountButton.addEventListener('click', function () {
-            modalAmountReceived.value = totalAmount.toFixed(2);
-            modalChangeDisplay.textContent = '₱0.00';
-        });
-
-        // Validate and submit form on confirm
-        modalConfirmButton.addEventListener('click', function () {
-            const receivedAmount = parseFloat(modalAmountReceived.value || 0);
-
-            if (receivedAmount < totalAmount) {
-                alert('The received amount is less than the payable amount.');
-                return;
-            }
-
-            if (!customerNameInput || !customerNameInput.value.trim()) {
-                alert('Customer name is required.');
-                return;
-            }
-            if (!notesInput || !notesInput.value.trim()) {
-                alert('Notes are required.');
-                return;
-            }
-
-            // Update form values
-            placeOrderForm.querySelector('input[name="amount_received"]').value = receivedAmount;
-            placeOrderForm.querySelector('input[name="customer_name"]').value = customerNameInput.value.trim();
-            placeOrderForm.querySelector('input[name="notes"]').value = notesInput.value.trim();
-
-            // Submit form
-            placeOrderForm.submit();
+            fetch('{{ route("cart.store") }}', {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateTotalAmount(); // Update the total amount after adding a product
+                    location.reload(); // Refresh the page to update UI
+                }
+            })
+            .catch(error => console.error('Error:', error));
         });
     });
+
+    // **Update modal with total amount when Confirm button is clicked**
+    confirmButton?.addEventListener('click', function () {
+        updateTotalAmount(); // Ensure the latest total is used
+        modalAmountPayable.textContent = `₱${totalAmount.toFixed(2)}`;
+        modalAmountReceived.value = '';
+        modalChangeDisplay.textContent = '₱0.00';
+    });
+
+    // **Update change when amount is entered**
+    modalAmountReceived.addEventListener('input', function () {
+        const receivedAmount = parseFloat(modalAmountReceived.value || 0);
+        const change = Math.max(receivedAmount - totalAmount, 0);
+        modalChangeDisplay.textContent = `₱${change.toFixed(2)}`;
+    });
+
+    // **Handle predefined amount buttons**
+    amountButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const amount = parseFloat(button.dataset.amount || 0);
+            modalAmountReceived.value = amount;
+            const change = Math.max(amount - totalAmount, 0);
+            modalChangeDisplay.textContent = `₱${change.toFixed(2)}`;
+        });
+    });
+
+    // **Handle exact amount button**
+    exactAmountButton.addEventListener('click', function () {
+        modalAmountReceived.value = totalAmount.toFixed(2);
+        modalChangeDisplay.textContent = '₱0.00';
+    });
+
+    // **Validate and submit form on confirm**
+    modalConfirmButton.addEventListener('click', function () {
+        const receivedAmount = parseFloat(modalAmountReceived.value || 0);
+
+        if (receivedAmount < totalAmount) {
+            alert('The received amount is less than the payable amount.');
+            return;
+        }
+
+        if (!customerNameInput || !customerNameInput.value.trim()) {
+            alert('Customer name is required.');
+            return;
+        }
+        if (!notesInput || !notesInput.value.trim()) {
+            alert('Notes are required.');
+            return;
+        }
+
+        // Update form values
+        placeOrderForm.querySelector('input[name="amount_received"]').value = receivedAmount;
+        placeOrderForm.querySelector('input[name="customer_name"]').value = customerNameInput.value.trim();
+        placeOrderForm.querySelector('input[name="notes"]').value = notesInput.value.trim();
+
+        // Submit form
+        placeOrderForm.submit();
+    });
+});
+
 </script>
 
 
