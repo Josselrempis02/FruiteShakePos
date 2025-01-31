@@ -1,3 +1,4 @@
+
 @extends('layouts.admin')
 
 @section('title', 'Dashboard')
@@ -66,58 +67,33 @@
     @endforeach
 </ul>
 
-            <script>
-                document.querySelectorAll('.update-quantity').forEach(button => {
-                button.addEventListener('click', function () {
-                    const itemId = this.getAttribute('data-id');
-                    const action = this.getAttribute('data-action');
+                <script>
+                    document.querySelectorAll('.update-quantity').forEach(button => {
+                        button.addEventListener('click', function () {
+                            const itemId = this.getAttribute('data-id');
+                            const action = this.getAttribute('data-action');
 
-                    fetch('{{ route('cart.update') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        },
-                        body: JSON.stringify({ id: itemId, action: action }),
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                const itemElement = this.closest('li'); 
-                                
-                                if (data.quantity === 0) {
-                                
-                                    itemElement.remove();
+                            fetch('{{ route('cart.update') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                },
+                                body: JSON.stringify({ id: itemId, action: action }),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    location.reload(); // Reload the page after updating the quantity
                                 } else {
-                                    // Update the quantity in the UI
-                                    const quantitySpan = this.parentElement.querySelector('span');
-                                    quantitySpan.textContent = data.quantity;
-
-                                    // Update the total price for the item
-                                    const itemPriceElement = itemElement.querySelector('.item-price');
-                                    itemPriceElement.textContent = `$${data.totalPrice.toFixed(2)}`;
+                                    alert(data.message || 'Something went wrong.');
                                 }
+                            })
+                            .catch(error => console.error('Error:', error));
+                        });
+                    });
+                </script>
 
-                                // Update the subtotal
-                                document.querySelector('.subtotal').textContent = `$${data.subtotal.toFixed(2)}`;
-                                document.querySelector('.total').textContent = `$${data.subtotal.toFixed(2)}`;
-
-                                // Update the discount if applicable
-                                if (document.querySelector('.discount')) {
-                                    document.querySelector('.discount').textContent = `- $${data.discount.toFixed(2)}`;
-                                }
-
-                                // Update the total
-                                document.querySelector('.total').textContent = `$${data.total.toFixed(2)}`;
-                            } else {
-                                alert(data.message || 'Something went wrong.');
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                });
-            });
-
-            </script>
 
 
 
@@ -174,11 +150,9 @@
             <div class="d-flex justify-content-between">
                 <span>Total</span>
                 <span class="total">
-                    @if (session('cart_total'))
-                    ₱{{ number_format(session('cart_total'), 2) }}
-                    @else
+                  
                     ₱{{ number_format(Cart::getTotal(), 2) }}
-                    @endif
+                
                 </span>
             </div>
 
